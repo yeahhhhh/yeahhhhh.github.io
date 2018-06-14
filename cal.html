@@ -1,0 +1,53 @@
+<html>
+<head>
+<script>
+var rate = [
+	[-1, 0.063930013, 0.002018843, 0, 0, 0],
+	[-1, 0.209486166, 0.032608696, 0.008893281, 0, 0],
+	[-1, 0.220726783, 0.053835801, 0.014804845, 0.018292683, 0]
+];
+for(var x = 0; x < rate.length; ++x){
+	var rest = 1;
+	for(var y = 1; y < rate[0].length; ++y){
+		rest -= rate[x][y];
+	}
+	rate[x][0] = rest;
+}
+
+console.log(rate);
+
+var cost = [120, 150, 230];
+
+
+//计算科目1重考count1次，科目2重考count2次，科目3重考count3次的花费
+function total(count1, count2, count3){
+	return count1 * cost[0] + count2 * cost[1] + count3 * cost[2];
+}
+
+function cal(threshold){
+	var result = 0;
+	for(var i = 0; i < rate[0].length; ++i){
+		for(var j = 0; j < rate[1].length; ++j){
+			for(var k = 0; k < rate[2].length; ++k){
+				var actual = total(i, j, k);
+				actual = actual > threshold ? threshold : actual;
+				result += (actual * rate[0][i] * rate[1][j] * rate[2][k]);
+			}
+		}
+	}
+	return result;
+}
+
+function buttonClick(){
+	var threshold = parseInt(document.getElementById("value").value);
+	var result = cal(threshold);
+	document.getElementById("container").innerHTML = result;
+}
+</script>
+</head>
+<body>
+阈值：<input type="number" id="value" name="value" value=500 />
+<button type="button" onclick="buttonClick()">计算</button>
+<p id="container"></p>
+</body>
+</html>
