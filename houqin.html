@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>支援收益</title>
+<script>
+
+var data = [
+	[0, 1, 50, 0, 145, 145, 0],
+	[0, 2, 180, 550, 0, 0, 350],
+	[0, 3, 720, 900, 900, 900, 250],
+	[0, 4, 1440, 0, 1200, 800, 750],
+	[1, 5, 15, 10, 30, 15, 0],
+	[1, 6, 30, 0, 40, 60, 0],
+	[1, 7, 60, 30, 0, 30, 10],
+	[1, 8, 120, 160, 160, 0, 0],
+	[2,9,40,100,0,0,30],
+	[2,10,90,60,200,80,0],
+	[2,11,240,10,10,10,230],
+	[2,12,360,0,250,600,60],
+	[3, 13, 20, 50, 0, 75, 0],
+	[3, 14, 45, 0, 120, 70, 30],
+	[3, 15, 90, 0, 300, 0, 0],
+	[3, 16, 300, 0, 0, 300, 300],
+	[4, 17, 60, 0, 185, 185, 0],
+	[4, 18, 120, 0, 0, 0, 210],
+	[4, 19, 360, 850, 550, 0, 0],
+	[4, 20, 480, 400, 400, 400, 150],
+	[5, 21, 30, 0, 0, 100, 45],
+	[5, 22, 150, 0,600, 300, 0],
+	[5, 23, 240, 800, 400, 400, 0],
+	[5, 24, 420, 100, 0, 0, 700],
+	[6, 25, 120, 300, 300, 0, 100],
+	[6, 26, 180, 0, 200, 550, 100],
+	[6, 27, 300, 0, 0, 200, 500],
+	[6, 28, 720, 800, 800, 800, 0],
+	[7, 29, 150, 650, 0, 650, 0],
+	[7, 30, 240, 0, 650, 0, 300],
+	[7, 31, 330, 900, 600, 600, 0],
+	[7, 32, 480, 250, 250, 250, 600],
+	[8, 33, 60, 150, 150, 150, 0],
+	[8, 34, 180, 0, 0, 0, 450],
+	[8, 35, 300, 400, 800, 800, 0],
+	[8, 36, 540, 1500, 400, 400, 100],
+	[9, 37, 30, 0, 0, 100, 50],
+	[9, 38, 90, 180, 0, 180, 100],
+	[9, 39, 270, 750, 750, 0, 0],
+	[9, 40, 420, 500, 900, 900, 0],
+	[10, 41, 40, 140, 200, 0, 0],
+	[10, 42, 100, 0, 240, 180, 0],
+	[10, 43, 320, 0, 480, 480, 300],
+	[10, 44, 600, 660, 660, 660, 330],
+	[11, 45, 240, 350, 1050, 0, 0],
+	[11, 46, 240, 360, 540, 540, 0],
+	[11, 47, 480, 0, 750, 1500, 250],
+	[11, 48, 600, 0, 1650, 0, 900],
+]
+
+function getBestList(k1, k2, k3, k4){
+	data.sort(function(a, b){
+		return getPoint(b, k1, k2, k3, k4) - getPoint(a, k1, k2, k3, k4);
+	});
+	var table = document.getElementById("table");
+	table.innerHTML = "";
+	var title = document.createElement("tr");
+	title.innerHTML = "<td>远征号</td><td>章节</td><td>人力</td><td>弹药</td><td>口粮</td><td>零件</td><td>小时效益</td>";
+	table.appendChild(title);
+	for(var i = 0; i < data.length; ++i){
+		var obj = {
+			'chapter': data[i][0],
+			'id' : data[i][1],
+			'renli' : data[i][3],
+			'danyao' : data[i][4],
+			'kouliang' : data[i][5],
+			'lingjian' : data[i][6],
+			'point' : parseInt(getPoint(data[i], k1, k2, k3, k4))
+		};
+		var tr = document.createElement("tr");
+		tr.innerHTML = "<td>"+obj.id+"</td><td>"+obj.chapter+"</td><td>"+obj.renli+"</td><td>"+obj.danyao+"</td><td>"+obj.kouliang+"</td><td>"+obj.lingjian+"</td><td>"+obj.point+"</td>";
+		table.appendChild(tr);
+	}
+}
+
+function getPoint(task, k1, k2, k3, k4){
+	return (task[3]*k1+task[4]*k2+task[5]*k3+task[6]*k4)/task[2]*60;
+}
+
+function calculate(){
+	var k1 = parseInt(document.getElementById('renli').value);
+	var k2 = parseInt(document.getElementById('danyao').value);
+	var k3 = parseInt(document.getElementById('kouliang').value);
+	var k4 = parseInt(document.getElementById('lingjian').value);
+	getBestList(k1, k2, k3, k4);
+}
+
+</script>
+</head>
+<body>
+人力：<input id="renli" type="text" value=1 />
+弹药：<input id="danyao" type="text" value=1 />
+口粮：<input id="kouliang" type="text" value=1 />
+零件：<input id="lingjian" type="text" value=3 />
+<input type="button" id="calculate" value="计算" onclick="calculate()" />
+<table id="table" border=true>
+</table>
+</body>
+</html>
