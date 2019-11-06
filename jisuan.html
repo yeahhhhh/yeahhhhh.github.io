@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body {
+	font-size: 24px;
+	line-height: 24px;
+}
+input {
+	height: 30px;
+}
+button {
+	min-width: 100px;
+	height: 30px;
+}
+</style>
+</head>
+<body>
+<p><span>绳子直径（mm）</span><input type="number" id="rd" value="12"/></p>
+<p><span>绳子长度（m）</span><input type="number" id="rl" value="150"/></p>
+<p><span>圆柱直径（mm）</span><input type="number" id="cd" value="110"/></p>
+<p><span>圆柱长度（mm）</span><input type="number" id="cl" value="300"/></p>
+<button onclick=calculate()>计算</button>
+<p>结果：</p>
+<p id=result></p>
+<script>
+function calculate(){
+	var rd = parseInt(document.getElementById("rd").value)
+	var rl = parseInt(document.getElementById("rl").value)
+	var cd = parseInt(document.getElementById("cd").value)
+	var cl = parseInt(document.getElementById("cl").value)
+	var layer = parseInt(cl / rd);
+	var n = dengChaShuLieQiuXiangShu(cd, rd*2, rl * 1000 / 3.14 / layer);
+	n = (n==parseInt(n))? n : parseInt(n)+1;
+	var result = "可以绕"+n+"层，厚度"+n*rd+"mm";
+	document.getElementById("result").innerHTML = result;
+}
+
+function dengChaShuLieQiuXiangShu(a0, diff, sum){
+	var a = diff / 2;
+	var b = (2 * a0 - diff)/2;
+	var c = -sum;
+	return (-b + Math.pow(Math.pow(b, 2) - 4 * a * c, 0.5))/(2*a);
+}
+</script>
+</body>
+</html>
